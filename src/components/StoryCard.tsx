@@ -12,6 +12,15 @@ export function StoryCard({ story, featured = false }: StoryCardProps) {
 
   return (
     <article className={featured ? "story story--featured" : "story"}>
+
+      {story.origin === "drupal" && story.image && (
+        <img
+          className="story__image"
+          src={story.image}
+          alt=""
+        />
+      )}
+      
       <div className="story__meta">
 
         {story.source && <span>{story.source}</span>}

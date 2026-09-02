@@ -19,10 +19,33 @@ type DrupalNewsNode = {
 
     field_subhead: string | null;
   };
+
+  relationships: {
+  field_featured_image: {
+    data: {
+      type: string;
+      id: string;
+    } | null;
+  };
+};
+};
+
+type DrupalIncludedFile = {
+  type: "file--file";
+  id: string;
+
+  attributes: {
+    filename: string;
+
+    uri: {
+      url: string;
+    };
+  };
 };
 
 type DrupalNewsResponse = {
   data: DrupalNewsNode[];
+  included?: DrupalIncludedFile[];
 };
 
 export async function getDrupalNews() {
@@ -45,6 +68,10 @@ export async function getDrupalNews() {
     "page[limit]",
     "5"
   );
+  url.searchParams.set(
+  "include",
+  "field_featured_image"
+  );
 
   const response = await fetch(
     url.toString(),
@@ -64,31 +91,51 @@ export async function getDrupalNews() {
   const data =
     (await response.json()) as DrupalNewsResponse;
 
-  return data.data.map((node) => ({
-  id: node.id,
-  externalId: node.id,
+  return data.data.map((node) => {
+  const imageId =
+    node.relationships.field_featured_image.data?.id;
 
-  title: node.attributes.title,
-  originalTitle: node.attributes.title,
+  const imageFile = data.included?.find(
+    (file) => file.id === imageId
+  );
 
-  description:
-    node.attributes.field_subhead ||
-    node.attributes.body?.summary ||
-    undefined,
+  const imagePath =
+    imageFile?.attributes.uri.url;
 
-  url: node.attributes.path.alias
-    ? `${DRUPAL_BASE_URL}${node.attributes.path.alias}`
-    : DRUPAL_BASE_URL,
+  const image = imagePath
+    ? imagePath.startsWith("http")
+      ? imagePath
+      : `${DRUPAL_BASE_URL}${imagePath}`
+    : undefined;
 
-  source: "Loyola University New Orleans",
-  sourceDomain: "loyno.edu",
+  return {
+    id: node.id,
+    externalId: node.id,
 
-  publishedAt: node.attributes.created,
+    title: node.attributes.title,
+    originalTitle: node.attributes.title,
 
-  type: "article" as const,
-  origin: "drupal" as const,
+    description:
+      node.attributes.field_subhead ||
+      node.attributes.body?.summary ||
+      undefined,
 
-  isLoyolaOwned: true,
-  published: true,
-}));
+    url: node.attributes.path.alias
+      ? `${DRUPAL_BASE_URL}${node.attributes.path.alias}`
+      : DRUPAL_BASE_URL,
+
+    image,
+
+    source: "Loyola University New Orleans",
+    sourceDomain: "loyno.edu",
+
+    publishedAt: node.attributes.created,
+
+    type: "article" as const,
+    origin: "drupal" as const,
+
+    isLoyolaOwned: true,
+    published: true,
+  };
+});
 }
