@@ -1,11 +1,19 @@
 import { NewsPage } from "@/components/NewsPage";
 import { getPublishedStories } from "@/lib/news-store";
+import { getDrupalNews } from "@/lib/drupal";
 
 export default async function Home() {
-  const stories = await getPublishedStories();
+  const drupalStories = await getDrupalNews();
+  const meltwaterStories = await getPublishedStories();
 
-  console.log("PUBLISHED STORY COUNT:", stories.length);
-  console.log("FIRST PUBLISHED STORY:", stories[0]);
+  const stories = [
+    ...drupalStories,
+    ...meltwaterStories,
+  ].sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() -
+      new Date(a.publishedAt).getTime()
+  );
 
   return (
     <NewsPage

@@ -60,6 +60,13 @@ a { color: inherit; }
   background: var(--accent);
   font-family: Georgia, "Times New Roman", serif;
 }
+
+.masthead__nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
 .masthead__link {
   font-size: 14px;
   font-weight: 700;
@@ -122,7 +129,9 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-.coverage { padding: clamp(64px, 8vw, 110px) 0; }
+.coverage {
+  padding: clamp(32px, 4vw, 56px) 0;
+}
 .section-heading {
   display: flex;
   align-items: center;

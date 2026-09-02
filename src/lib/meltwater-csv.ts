@@ -201,6 +201,7 @@ function normalizeRow(
     ),
 
     type,
+    origin: "meltwater",
 
     reach: numberFrom(row["Reach"]),
     engagement: numberFrom(row["Engagement"]),

@@ -1,4 +1,4 @@
-import type { NewsStory } from "@/lib/meltwater";
+import type { NewsStory } from "@/lib/types";
 import { formatStoryDate } from "@/lib/date";
 import { ArrowIcon } from "./ArrowIcon";
 
@@ -13,6 +13,7 @@ export function StoryCard({ story, featured = false }: StoryCardProps) {
   return (
     <article className={featured ? "story story--featured" : "story"}>
       <div className="story__meta">
+
         {story.source && <span>{story.source}</span>}
         {story.source && date && <span className="story__dot" aria-hidden="true" />}
         {date && story.publishedAt && (

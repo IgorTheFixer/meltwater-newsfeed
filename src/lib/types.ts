@@ -28,6 +28,7 @@ export type NewsStory = {
   publishedAt: string;
 
   type: NewsType;
+  origin?: "drupal" | "meltwater";
 
   reach?: number;
   engagement?: number;
