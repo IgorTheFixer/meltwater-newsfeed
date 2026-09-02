@@ -1,17 +1,16 @@
 import { NewsPage } from "@/components/NewsPage";
-import { getMeltwaterStories } from "@/lib/meltwater";
-import { mockStories } from "@/lib/mock-stories";
+import { getPublishedStories } from "@/lib/news-store";
 
 export default async function Home() {
-  try {
-    const stories = await getMeltwaterStories();
-    return <NewsPage stories={stories} isDemo={process.env.USE_MOCK_DATA === "true"} />;
-  } catch (error) {
-    console.error("Unable to load Meltwater feed:", error);
+  const stories = await getPublishedStories();
 
-    // Development-friendly fallback: the page remains testable even if the
-    // remote feed is unavailable. A production project can replace this with
-    // an explicit error state if preferred.
-    return <NewsPage stories={mockStories} isDemo />;
-  }
+  console.log("PUBLISHED STORY COUNT:", stories.length);
+  console.log("FIRST PUBLISHED STORY:", stories[0]);
+
+  return (
+    <NewsPage
+      stories={stories}
+      isDemo={false}
+    />
+  );
 }

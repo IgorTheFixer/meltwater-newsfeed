@@ -207,8 +207,24 @@ a { color: inherit; }
   font-size: clamp(36px, 5vw, 66px);
   line-height: 1.02;
 }
-.story__title a { text-decoration: none; }
-.story__title a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+.story__title a {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.story__title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+
+/* Featured story can have a little more room */
+.story--featured .story__title a {
+  -webkit-line-clamp: 5;
+}
 .story__description {
   position: relative;
   z-index: 1;
