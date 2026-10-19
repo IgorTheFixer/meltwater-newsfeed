@@ -15,7 +15,7 @@ export function NewsPage({ stories, isDemo = false }: NewsPageProps) {
     (story) => story.origin !== "drupal"
   );
 
-  const loyolaPinned = loyolaStories.slice(0, 3);
+  const loyolaPinned = loyolaStories.slice(0, 6);
 
   const [featured, ...rest] = mediaStories;
 

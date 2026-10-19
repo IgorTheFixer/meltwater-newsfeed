@@ -66,7 +66,7 @@ export async function getDrupalNews() {
 
   url.searchParams.set(
     "page[limit]",
-    "5"
+    "6"
   );
   url.searchParams.set(
   "include",
